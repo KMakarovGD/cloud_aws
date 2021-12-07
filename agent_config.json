@@ -1,0 +1,49 @@
+{
+  "cloudwatch.emitMetrics": true,
+  "kinesis.endpoint": "kinesis.us-east-2.amazonaws.com",
+  "firehose.endpoint": "firehose.us-east-2.amazonaws.com",
+  "flows": [
+    {
+      "filePattern": "/var/log/cadabra/*.log",
+      "deliveryStream": "MackPutStream"
+    },
+    {
+      "filePattern": "/var/log/cadabra/*.log",
+      "kinesisStream": "ViewsStream",
+      "partitionKeyOption": "RANDOM",
+      "dataProcessingOptions": [
+        {
+          "optionName": "CSVTOJSON",
+          "customFieldNames": [
+            "item_id",
+            "timestamp",
+            "device_type",
+            "device_id",
+            "user_ip"
+          ]
+        }
+      ]
+    },
+    {
+      "filePattern": "/var/log/cadabra/*.log",
+      "kinesisStream": "ReviewsStream",
+      "partitionKeyOption": "RANDOM",
+      "dataProcessingOptions": [
+        {
+          "optionName": "CSVTOJSON",
+          "customFieldNames": [
+            "item_id",
+            "timestamp",
+            "device_type",
+            "device_id",
+            "user_ip",
+            "review_title",
+            "review_text",
+            "review_stars"
+          ]
+        }
+      ]
+    }
+  ]
+}
+
