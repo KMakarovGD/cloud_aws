@@ -58,15 +58,6 @@ df_spark_views = df_views.toDF()
 selected_spark_views = df_spark_views
 .withColumn("count", sfunc.count("user_ip", "timestamp")).groupBy("user_ip", "timestamp")
 .where(df_spark_views.count > 5)
-# for i in df_views.take(2):
-#    print(i)
-#
-# .withColumn("newtimestamp", sfunc.count("user_ip", "timestamp"))
-# df_views.where(
-#   "contact_details = 10 or contact_details = 75").select(
-#     ['id', 'given_name', 'family_name', 'contact_details']).show()
-
-# user_ips = df_views.select_fields("user_ip").where("id = 10 or id = 75").groupBy(['user_ip','timestamp'])
 
 user_ips = DynamicFrame.fromDF(selected_spark_views, glueContext, "user_ips")
 
@@ -81,8 +72,3 @@ glueContext.write_dynamic_frame_from_options(
         "dynamodb.throughput.write.percent": "1.0"
     }
 )
-
-# dfc.select('hist_root_contact_details').toDF().where("id = 10 or id = 75").orderBy(['id','index']).show()
-# write_ip_to_db(["182.188.3.3"])
-# dfc.select('hist_root_contact_details').toDF().where("id = 10 or id = 75").orderBy(['id','index']).show()
-# write_ip_to_db(["182.188.3.3"])
